@@ -2,9 +2,19 @@ import streamlit as st
 import os
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
-from transformers import pipeline
 
+from openai import OpenAI
 
+client = OpenAI()
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "user", "content": user_question}
+    ]
+)
+
+answer = response.choices[0].message.content
 st.set_page_config(page_title="AI Document Chatbot", layout="centered")
 
 st.write("Upload a PDF and ask questions about its content.")
