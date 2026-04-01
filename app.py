@@ -13,9 +13,19 @@ st.set_page_config(page_title="AI Document Chatbot", layout="centered")
 # Initialize OpenAI client
 client = OpenAI()
 
-# UI Header
 st.title("📄 AI Document Chatbot")
-st.markdown("Upload a PDF and ask questions about its content.")
+
+st.markdown("""
+### 💡 What this app does
+- Upload any PDF document  
+- Ask questions in natural language  
+- Get AI-powered answers instantly  
+
+---
+
+""")
+st.markdown("---")
+st.markdown("👩‍💻 Built by Gayathri Prabhu ")
 
 # Demo warning (OPTION 3)
 st.warning("⚠️ Demo mode: AI responses may be limited due to API quota.")
