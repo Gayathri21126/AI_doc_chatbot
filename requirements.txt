@@ -3,3 +3,5 @@ openai
 python-dotenv
 pandas
 PyPDF2
+transformers
+torch
