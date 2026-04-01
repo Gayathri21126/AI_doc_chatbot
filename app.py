@@ -7,6 +7,8 @@ from openai import OpenAI
 
 client = OpenAI()
 
+st.write(os.getenv("OPENAI_API_KEY"))
+
 response = client.chat.completions.create(
     model="gpt-4o-mini",
     messages=[
