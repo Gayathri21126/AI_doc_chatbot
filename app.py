@@ -7,55 +7,77 @@ from openai import OpenAI
 # Load environment variables
 load_dotenv()
 
-# Set page config FIRST
+# Page config (must be first Streamlit command)
 st.set_page_config(page_title="AI Document Chatbot", layout="centered")
 
 # Initialize OpenAI client
 client = OpenAI()
 
-# UI
+# UI Header
 st.title("📄 AI Document Chatbot")
-st.write("Upload a PDF and ask questions about its content.")
+st.markdown("Upload a PDF and ask questions about its content.")
+
+# Demo warning (OPTION 3)
+st.warning("⚠️ Demo mode: AI responses may be limited due to API quota.")
 
 # File upload
 uploaded_file = st.file_uploader("Upload a PDF", type="pdf")
 
-# Function to extract text
+# Function to extract text from PDF
 def extract_text(pdf):
     reader = PdfReader(pdf)
     text = ""
     for page in reader.pages:
-        text += page.extract_text()
+        content = page.extract_text()
+        if content:
+            text += content
     return text
 
-# Process file
+# Process uploaded file
 if uploaded_file:
     text = extract_text(uploaded_file)
-    st.success("Document uploaded successfully!")
 
-    user_question = st.text_input("Ask a question about the document:")
+    if text.strip() == "":
+        st.error("⚠️ Could not extract text from this PDF.")
+    else:
+        st.success("✅ Document uploaded successfully!")
 
-    if user_question:
-        with st.spinner("Thinking..."):
+        # User input
+        user_question = st.text_input("Ask a question about the document:")
 
-            prompt = f"""
-            Answer the question based on the document below.
+        if user_question:
+            with st.spinner("🤖 Thinking..."):
 
-            Document:
-            {text[:3000]}
+                prompt = f"""
+                Answer the question based only on the document below.
 
-            Question:
-            {user_question}
-            """
+                Document:
+                {text[:3000]}
 
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "user", "content": prompt}
-                ]
-            )
+                Question:
+                {user_question}
+                """
 
-            answer = response.choices[0].message.content
+                try:
+                    # Try OpenAI API
+                    response = client.chat.completions.create(
+                        model="gpt-4o-mini",
+                        messages=[
+                            {"role": "user", "content": prompt}
+                        ]
+                    )
 
-            st.write("### Answer:")
-            st.success(answer)
+                    answer = response.choices[0].message.content
+
+                except Exception as e:
+                    # Fallback (OPTION 2)
+                    answer = "⚠️ AI response unavailable (API quota exceeded).\n\n"
+
+                    if user_question.lower() in text.lower():
+                        answer += "📌 A related section was found in the document."
+                    else:
+                        answer += "❌ No direct match found. Try rephrasing your question."
+
+                # Display answer
+                st.markdown("### 📢 Answer")
+                st.success(answer)
