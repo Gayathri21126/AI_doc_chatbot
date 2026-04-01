@@ -1,26 +1,28 @@
 # 🤖 AI Document Chatbot
 
-An AI-powered web application that allows users to upload documents and ask questions about them.
+An AI-powered web application that allows users to upload PDF documents and ask questions about their content.
 
-## 🚀 Features
-- Upload PDF documents
+## 🚀 Live Demo
+👉 [Click here to try the app](https://aidocchatbot-2wyrw3q2uact38emvdappvd.streamlit.app/)
+
+## ✨ Features
+- Upload and process PDF documents
 - Ask questions in natural language
 - AI-generated answers based on document content
-- Simple and interactive UI using Streamlit
+- Fallback mode when API is unavailable
 
 ## 🛠️ Tech Stack
 - Python
 - Streamlit
-- OpenAI API (or local fallback)
-- Pandas / Text Processing
+- OpenAI API
+- PyPDF2
 
-## 📌 Use Case
-This project demonstrates:
-- Building AI-powered applications
-- Working with APIs and NLP
-- Creating interactive web apps
-- End-to-end deployment workflow
+## 📌 Key Highlights
+- Built and deployed an end-to-end AI application
+- Implemented error handling for production stability
+- Designed an interactive UI for real-time usage
 
-## ▶️ How to Run
+## ▶️ Run Locally
+
 pip install -r requirements.txt
 streamlit run app.py
